@@ -1,7 +1,7 @@
 package com.example.compose.richtexteditor
 
-import com.example.compose.designcomponents.TextFieldState
-import com.example.compose.designcomponents.textFieldStateSaver
+import com.example.compose.designsystem.TextFieldState
+import com.example.compose.designsystem.textFieldStateSaver
 
 class NotepadFieldState(
     initialText: String? = null,

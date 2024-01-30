@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -62,9 +63,28 @@ fun ComposeUpTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
+    val defaultGradientColors = GradientColors(
+        top = colorScheme.inverseOnSurface,
+        bottom = colorScheme.primaryContainer,
+        container = colorScheme.surface,
     )
+
+    val defaultBackgroundTheme = BackgroundTheme(
+        color = colorScheme.surface
+    )
+    val defaultTintTheme = TintTheme(
+        iconTint = colorScheme.primary
+    )
+
+    CompositionLocalProvider(
+        LocalGradientColors provides defaultGradientColors,
+        LocalBackgroundTheme provides defaultBackgroundTheme,
+        LocalTintTheme provides defaultTintTheme
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }

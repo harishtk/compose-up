@@ -1,4 +1,4 @@
-package com.example.compose.designcomponents
+package com.example.compose.designsystem
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

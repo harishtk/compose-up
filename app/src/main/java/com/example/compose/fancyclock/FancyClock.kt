@@ -52,7 +52,8 @@ import androidx.compose.ui.unit.sp
 import com.example.compose.HalfSizeShape
 import com.example.compose.R
 import com.example.compose.WithLifecycle
-import com.example.compose.designcomponents.angleGradientBackground
+import com.example.compose.designsystem.angleGradientBackground
+import com.example.compose.ui.theme.ComposeUpTheme
 import com.example.compose.ui.theme.GradientColors
 import com.example.compose.ui.theme.MaterialColor
 import kotlinx.coroutines.CoroutineScope
@@ -71,8 +72,9 @@ fun FancyClockRoute() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         FancyClock(
-            Modifier.fillMaxWidth(0.8f)
-            .aspectRatio(1f), onTick = { tickSound.start() })
+            Modifier
+                .fillMaxWidth(0.8f)
+                .aspectRatio(1f), onTick = { tickSound.start() })
     }
 }
 
@@ -282,6 +284,14 @@ fun Mirror(content: @Composable () -> Unit) {
         ) {
             content()
         }
+    }
+}
+
+@Preview
+@Composable
+private fun FancyClockPreview() {
+    ComposeUpTheme {
+        FancyClock(onTick = {})
     }
 }
 

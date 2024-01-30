@@ -12,7 +12,7 @@
  * permissions and limitations under the License.
  */
 
-package com.example.compose.designcomponents
+package com.example.compose.designsystem
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable

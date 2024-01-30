@@ -1,6 +1,5 @@
 package com.example.compose
 
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -8,89 +7,41 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.compose.designcomponents.angleGradientBackground
-import com.example.compose.designcomponents.recomposeHighlighter
-import com.example.compose.fancyclock.FancyClock
+import com.example.compose.calendar.CalendarRoute
+import com.example.compose.nightsky.Space
 import com.example.compose.richtexteditor.NotepadRoute
-import com.example.compose.selectionchip.SelectionChipRoute
 import com.example.compose.ui.theme.ComposeUpTheme
-import com.example.compose.ui.theme.GradientColors
 import com.example.compose.ui.theme.MaterialColor
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.text.SimpleDateFormat
-import java.util.Date
+import kotlinx.coroutines.flow.update
 
 class MainActivity : ComponentActivity() {
 
@@ -128,7 +79,9 @@ class MainActivity : ComponentActivity() {
                 onDispose { }
             }
 
-            ComposeUpApp()
+            ComposeUpApp {
+                _fullScreenMode.update { !fullScreenMode.value }
+            }
         }
     }
 
@@ -159,18 +112,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun ComposeUpApp() {
+private fun ComposeUpApp(
+    onToggleFullScreen: () -> Unit = {}
+) {
     ComposeUpTheme {
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier
-                .fillMaxSize()
-            /*.clickable {
-                _fullScreenMode.update { !fullScreenMode.value }
-            }*/,
-            color = MaterialTheme.colorScheme.background
+                .fillMaxSize(),
+                // .clickable { onToggleFullScreen() },
+            color = MaterialTheme.colorScheme.background,
         ) {
-            NotepadRoute()
+            CalendarRoute()
         }
     }
 }

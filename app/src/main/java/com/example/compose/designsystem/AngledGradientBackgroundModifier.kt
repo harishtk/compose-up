@@ -1,4 +1,4 @@
-package com.example.compose.designcomponents
+package com.example.compose.designsystem
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
