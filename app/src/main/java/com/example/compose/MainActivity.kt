@@ -36,6 +36,7 @@ import com.example.compose.nightsky.Space
 import com.example.compose.richtexteditor.NotepadRoute
 import com.example.compose.ui.theme.ComposeUpTheme
 import com.example.compose.ui.theme.MaterialColor
+import com.example.compose.viewflipper.ViewFlipperRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -123,7 +124,7 @@ private fun ComposeUpApp(
                 // .clickable { onToggleFullScreen() },
             color = MaterialTheme.colorScheme.background,
         ) {
-            CalendarRoute()
+            Space()
         }
     }
 }

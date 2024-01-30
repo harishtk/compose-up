@@ -8,8 +8,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -32,7 +34,16 @@ import com.example.compose.viewflipper.FlipAnimationType.VERTICAL_CLOCKWISE
 
 @Composable
 fun ViewFlipperRoute() {
-
+    Column(
+        Modifier
+            .fillMaxSize()
+            .safeContentPadding()
+            .verticalScroll(rememberScrollState())
+    ) {
+        repeat(10) {
+            ListItem()
+        }
+    }
 }
 
 @Composable
@@ -41,18 +52,15 @@ private fun ViewFlipper(
     flippableController: FlippableController = rememberFlippableController(),
     frontView: @Composable BoxScope.() -> Unit = {},
     backView: @Composable BoxScope.() -> Unit = {},
-    flipAnimationType: FlipAnimationType = FlipAnimationType.VERTICAL_CLOCKWISE,
 ) {
     Box(modifier = modifier) {
         val isFlipped = flippableController.currentState == FlippableState.BACK
         FrontView(
             isFlipped = isFlipped,
-            flipAnimationType = flipAnimationType,
             content = frontView
         )
         BackView(
             isFlipped = isFlipped,
-            flipAnimationType = flipAnimationType,
             content = backView
         )
     }
@@ -62,11 +70,10 @@ private fun ViewFlipper(
 private fun FrontView(
     modifier: Modifier = Modifier,
     isFlipped: Boolean,
-    flipAnimationType: FlipAnimationType = FlipAnimationType.VERTICAL_CLOCKWISE,
     content: @Composable BoxScope.() -> Unit
 ) {
     val animationProgress by animateFloatAsState(
-        targetValue = if (isFlipped) 1f else 0f,
+        targetValue = if (isFlipped) 90f else 0f,
         animationSpec = tween(
             FlipAnimationDurationMillis,
             delayMillis = if (isFlipped) 0 else FlipAnimationDurationMillis
@@ -77,8 +84,7 @@ private fun FrontView(
     Box(
         modifier = modifier
             .graphicsLayer {
-                rotationX = animationProgress * (flipAnimationType.rotate(isFlipped).rotationX)
-                rotationY = animationProgress * (flipAnimationType.rotate(isFlipped).rotationY)
+                rotationX = animationProgress
                 cameraDistance = 8 * density
             },
         content = content
@@ -89,11 +95,10 @@ private fun FrontView(
 private fun BackView(
     modifier: Modifier = Modifier,
     isFlipped: Boolean,
-    flipAnimationType: FlipAnimationType = FlipAnimationType.VERTICAL_CLOCKWISE,
     content: @Composable BoxScope.() -> Unit
 ) {
     val animationProgress by animateFloatAsState(
-        targetValue = if (isFlipped) 0f else 1f,
+        targetValue = if (isFlipped) 0f else -90f,
         animationSpec = tween(
             FlipAnimationDurationMillis,
             delayMillis = if (isFlipped) FlipAnimationDurationMillis else 0
@@ -104,8 +109,7 @@ private fun BackView(
     Box(
         modifier = modifier
             .graphicsLayer {
-                rotationX = animationProgress * -(flipAnimationType.rotate(isFlipped).rotationX)
-                rotationY = animationProgress * -(flipAnimationType.rotate(isFlipped).rotationY)
+                rotationX = animationProgress
                 cameraDistance = 8 * density
             },
         content = content
@@ -117,8 +121,6 @@ private fun BackView(
 private fun ViewFlipperPreview() {
     ComposeUpTheme {
         ComposeUpBackground {
-            val flippableController = rememberFlippableController()
-
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
@@ -144,7 +146,6 @@ private fun ListItem() {
         flippableController = flippableController,
         frontView = { SampleItemView(isFlipped = flippableController.isFlipped) },
         backView = { SampleDetailView(isFlipped = flippableController.isFlipped) },
-        flipAnimationType = VERTICAL_ANTI_CLOCKWISE
     )
 }
 
