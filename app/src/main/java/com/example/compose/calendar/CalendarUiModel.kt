@@ -2,7 +2,6 @@ package com.example.compose.calendar
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 data class CalendarUiModel(
     val selectedDate: CustomDate,

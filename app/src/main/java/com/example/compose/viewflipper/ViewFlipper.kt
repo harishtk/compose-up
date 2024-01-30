@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.designsystem.component.ComposeUpBackground
@@ -72,7 +73,7 @@ private fun FrontView(
     isFlipped: Boolean,
     content: @Composable BoxScope.() -> Unit
 ) {
-    val animationProgress by animateFloatAsState(
+    val rotation by animateFloatAsState(
         targetValue = if (isFlipped) 90f else 0f,
         animationSpec = tween(
             FlipAnimationDurationMillis,
@@ -84,7 +85,7 @@ private fun FrontView(
     Box(
         modifier = modifier
             .graphicsLayer {
-                rotationX = animationProgress
+                rotationX = rotation
                 cameraDistance = 8 * density
             },
         content = content
@@ -97,7 +98,7 @@ private fun BackView(
     isFlipped: Boolean,
     content: @Composable BoxScope.() -> Unit
 ) {
-    val animationProgress by animateFloatAsState(
+    val rotation by animateFloatAsState(
         targetValue = if (isFlipped) 0f else -90f,
         animationSpec = tween(
             FlipAnimationDurationMillis,
@@ -109,20 +110,22 @@ private fun BackView(
     Box(
         modifier = modifier
             .graphicsLayer {
-                rotationX = animationProgress
+                rotationX = rotation
                 cameraDistance = 8 * density
             },
         content = content
     )
 }
 
-@Preview(apiLevel = 33)
+@Preview(apiLevel = 33, device = Devices.PIXEL_3A)
 @Composable
 private fun ViewFlipperPreview() {
     ComposeUpTheme {
         ComposeUpBackground {
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
                 repeat(5) {
                     ListItem()
